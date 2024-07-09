@@ -6,11 +6,11 @@ The Financial Portfolio Management System (FPMS) is a web application that allow
 
 ## Features
 
-- Create blog posts
-- View all posts
-- Filter posts by category or author
-- Leave comments on posts
-- Authentication and authorization system
+- Create New assets
+- getting Portfolio based on User's Holdings
+- Buy & Sell Assets with the market price.
+- Update the pricefeed every 5 min
+- JWT Authentication
 
 ## Installation
 
@@ -25,33 +25,20 @@ The Financial Portfolio Management System (FPMS) is a web application that allow
 npm install
 ```
 
-3.Update the Environment variables with this templates.
-
-```bash
-PORT=
-MONGODB_URL=
-JWT_SECRET=
-JWT_LIFETIME=
-```
-
-4.Start the server using npm.
+3.Start the server using npm.
 
 ```bash
  npm start
 ```
 
-4.Testing Command.
+## API Documentation
 
-```bash
- npm test
-```
+You can find detailed API documentation [here](https://documenter.getpostman.com/view/21124682/2sA3e2gpnX).
 
 ## Tech Stack
 
-- Node.js: JavaScript runtime
-- Express: Web framework for Node.js
-- MongoDB: NoSQL database
-- Mongoose: ODM for MongoDB
-- JWT: JSON Web Token for authentication
-- Jest: Testing framework
-- Supertest: HTTP assertions for testing
+- Node.js: JavaScript runtime.
+- Express: Web framework for Node.js.
+- MongoDB: NoSQL database.
+- Mongoose: ODM for MongoDB.
+- JWT: JSON Web Token for authentication.

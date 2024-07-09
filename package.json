@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./src/app.js",
-    "test": "jest --env=node"
+    "start": "nodemon ./src/app.js"
   },
   "keywords": [],
   "author": "",

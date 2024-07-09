@@ -19,14 +19,21 @@ const portfolio = async (req, res) => {
 
     // Calculate total value of holdings based on current asset prices
     let totalValue = 0;
-    holdings.forEach((holding) => {
+    const holdingsDetails = holdings.map((holding) => {
       const asset = assets.find(
         (asset) => asset._id.toString() === holding.asset.toString()
       );
+      let currentValue = 0;
       if (asset) {
-        const currentValue = asset.currentPrice * holding.amount;
+        currentValue = asset.currentPrice * holding.amount;
         totalValue += currentValue;
       }
+      return {
+        asset: asset.name,
+        amount: holding.amount,
+        currentValue,
+        buyPrice: holding.buyPrice,
+      };
     });
 
     // Calculate total cost from transactions
@@ -55,14 +62,14 @@ const portfolio = async (req, res) => {
       status = "No Change";
     }
 
-    // Respond with the calculated portfolio value, profit/loss, and status
-    res
-      .status(200)
-      .json({
-        "Portfolio Value": totalValue,
-        "Price Difference": profitLoss,
-        Status: status,
-      });
+    // Respond with the calculated portfolio value, profit/loss, status, and holding details
+    res.status(200).json({
+      "Portfolio Value": totalValue,
+      "Purchased Value": totalCost,
+      "Price Difference": profitLoss,
+      Status: status,
+      holdings: holdingsDetails,
+    });
   } catch (error) {
     console.error("Error calculating portfolio value:", error);
     res.status(500).json({ error: "Failed to calculate portfolio value" });

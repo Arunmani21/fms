@@ -1,3 +1,7 @@
+/*
+Used Node cron package to update the price feed every 5 min. 
+*/
+
 const cron = require("node-cron");
 const Asset = require("../models/Asset"); // Adjust the path as needed
 
@@ -21,6 +25,6 @@ const updateAssetPrices = async () => {
 };
 
 // Schedule the job to run every two minutes
-cron.schedule("*/2 * * * *", updateAssetPrices);
+cron.schedule("*/5 * * * *", updateAssetPrices);
 
 module.exports = { updateAssetPrices };

@@ -8,7 +8,7 @@ const {
 
 // Route definitions
 router.post("/deposit", deposit);
-router.post("/withdrawal", withdrawal);
+router.post("/withdraw", withdrawal);
 router.get("/history", getTransaction);
 
 module.exports = router;

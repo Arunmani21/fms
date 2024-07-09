@@ -1,3 +1,5 @@
+/*Configuration for the mongoDB connection*/
+
 const mongoose = require("mongoose");
 
 const connectDB = (url) => {

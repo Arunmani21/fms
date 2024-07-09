@@ -3,6 +3,7 @@ const { BadRequestError } = require("../../errors");
 const jwt = require("jsonwebtoken");
 const User = require("../../models/User");
 const Transaction = require("../../models/Transaction");
+const { pagination } = require("../../utils/pagination");
 
 // Deposit Controller
 const deposit = async (req, res) => {
@@ -21,8 +22,8 @@ const deposit = async (req, res) => {
     if (!user) {
       throw new BadRequestError("User not found");
     }
-
-    user.balance += amount;
+    let previousBalance = user.balance;
+    let currentBalance = (user.balance += amount);
     await user.save();
 
     const transaction = new Transaction({
@@ -31,13 +32,16 @@ const deposit = async (req, res) => {
       amount: 0,
       price: 0,
       type: "deposit",
-      remainingBalance: user.balance,
+      remainingBalance: currentBalance,
     });
     await transaction.save();
 
-    res
-      .status(StatusCodes.CREATED)
-      .json({ message: "Deposit successful", transaction });
+    res.status(StatusCodes.CREATED).json({
+      "Previous Balance": previousBalance,
+      "Current Balance": currentBalance,
+      message: "Deposit successful",
+      transaction,
+    });
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
   }
@@ -71,7 +75,7 @@ const withdrawal = async (req, res) => {
     const transaction = new Transaction({
       user: userId,
       amount,
-      type: "withdrawal",
+      type: "withdraw",
       remainingBalance: user.balance,
     });
     await transaction.save();
@@ -90,15 +94,29 @@ const getTransaction = async (req, res) => {
   const userId = decodedToken.userId;
 
   try {
+    // Get page and items from query params, defaulting to page 1 and 5 items per page
+    let { page, items } = req.query;
+    page = parseInt(page) || 1;
+    items = parseInt(items) || 5;
+
+    const { limit, offset } = pagination(page, items);
+
     const transactions = await Transaction.find({ user: userId })
       .sort({ createdAt: -1 })
+      .skip(offset)
+      .limit(limit)
       .populate("asset");
+
     res.status(StatusCodes.OK).json({
-      msg: "transactions retrived successfully",
+      msg: "Transactions retrieved successfully",
       data: transactions,
+      currentPage: page,
+      itemsPerPage: limit,
     });
   } catch (error) {
-    throw new BadRequestError("Failed to retrive transactions" + error.message);
+    throw new BadRequestError(
+      "Failed to retrieve transactions: " + error.message
+    );
   }
 };
 

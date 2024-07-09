@@ -3,6 +3,6 @@ const router = express.Router();
 const calculatePortfolioValue = require("../controllers/stock/portfolio");
 
 // Route to calculate portfolio value
-router.get("/portfolio", calculatePortfolioValue);
+router.get("", calculatePortfolioValue);
 
 module.exports = router;
