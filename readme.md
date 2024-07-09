@@ -6,11 +6,11 @@ The Financial Portfolio Management System (FPMS) is a web application that allow
 
 ## Features
 
-- Create blog posts
-- View all posts
-- Filter posts by category or author
-- Leave comments on posts
-- Authentication and authorization system
+- Create New assets
+- getting Portfolio based on User's Holdings
+- Buy & Sell Assets with the market price.
+- Update the pricefeed every 5 min
+- JWT Authentication
 
 ## Installation
 
